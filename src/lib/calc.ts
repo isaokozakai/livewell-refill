@@ -9,12 +9,14 @@ export function computeAdherence(events: AdherenceEvent[]): {
   missedDoses: number;
   adherencePercentage: number;
 } {
-  const takenDoses = events
-    .filter((e) => e.status === "taken")
-    .reduce((sum, e) => sum + e.doses, 0);
-  const missedDoses = events
-    .filter((e) => e.status === "missed")
-    .reduce((sum, e) => sum + e.doses, 0);
+  const takenDoses = events.reduce(
+    (sum, e) => (e.status === "taken" ? sum + e.doses : sum),
+    0
+  );
+  const missedDoses = events.reduce(
+    (sum, e) => (e.status === "missed" ? sum + e.doses : sum),
+    0
+  );
   const total = takenDoses + missedDoses;
   const adherencePercentage =
     total === 0 ? 0 : Math.round((takenDoses / total) * 100);
@@ -24,25 +26,24 @@ export function computeAdherence(events: AdherenceEvent[]): {
 export function computeMedication(
   med: Medication,
   events: AdherenceEvent[],
-  todayISO?: string
+  referenceDateISO?: string
 ): MedicationWithComputed {
-  const today = todayISO ?? toISODate(new Date());
+  const today = referenceDateISO ?? toISODate(new Date());
 
-  // Calculate actual consumed doses from adherence events
-  const actualConsumed = events
-    .filter((e) => e.status === "taken")
-    .reduce((sum, e) => sum + e.doses, 0);
+  // Calculate total doses taken from adherence events
+  const totalTakenDoses = events.reduce(
+    (sum, e) => (e.status === "taken" ? sum + e.doses : sum),
+    0
+  );
 
   // Use actual consumption for remaining doses calculation
-  const remainingDoses = Math.max(0, med.quantityReceived - actualConsumed);
-  const daysLeft =
-    med.frequencyPerDay === 0
-      ? med.daysSupply
-      : Math.floor(remainingDoses / med.frequencyPerDay);
+  const remainingDoses = Math.max(0, med.quantityReceived - totalTakenDoses);
+  const freq = Math.max(1, med.frequencyPerDay);
+  const daysLeft = Math.floor(remainingDoses / freq);
+
+  const todayDate = new Date(today + "T00:00:00");
   const nextRefillDate = toISODate(
-    new Date(
-      new Date(today + "T00:00:00").getTime() + daysLeft * 24 * 60 * 60 * 1000
-    )
+    new Date(todayDate.getTime() + daysLeft * 24 * 60 * 60 * 1000)
   );
 
   let status: MedicationWithComputed["status"] = "on_track";

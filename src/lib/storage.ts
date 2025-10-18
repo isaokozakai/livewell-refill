@@ -80,8 +80,8 @@ export function updateMedication(
   const next: Medication = {
     ...prev,
     ...input,
-    name: input.name !== undefined ? input.name.trim() : prev.name,
-    dosage: input.dosage !== undefined ? input.dosage.trim() : prev.dosage,
+    name: input.name?.trim() ?? prev.name,
+    dosage: input.dosage?.trim() ?? prev.dosage,
     updatedAt: new Date().toISOString(),
   };
   data.medications[idx] = next;

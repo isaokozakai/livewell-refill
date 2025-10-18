@@ -78,20 +78,31 @@ curl -X POST http://localhost:3000/api/medications \
 ```
 src/
 ├── app/
-│   ├── api/              # REST API endpoints
-│   ├── page.tsx          # Main UI component
-│   └── page.module.css   # Responsive styles with dark mode
+│   ├── api/
+│   │   ├── medications/route.ts    # CRUD + adherence tracking
+│   │   ├── alerts/route.ts         # Refill alerts
+│   │   ├── search/route.ts         # RxNorm integration
+│   │   ├── export/csv/route.ts     # CSV export
+│   │   ├── export/pdf/route.ts     # PDF generation
+│   │   └── __tests__/              # API integration tests
+│   ├── page.tsx                    # Main UI component
+│   ├── page.module.css             # Responsive styles
+│   ├── globals.css                 # Global styles and dark mode
+│   └── layout.tsx                  # Root layout
 ├── lib/
-│   ├── types.ts          # TypeScript type definitions
-│   ├── calc.ts           # Pure calculation functions
-│   └── storage.ts        # File-based persistence
-└── __tests__/            # Unit and integration tests
+│   ├── types.ts                    # TypeScript definitions
+│   ├── calc.ts                     # Calculation logic
+│   ├── storage.ts                  # File-based persistence
+│   └── __tests__/                  # Unit tests
+└── data/
+    └── db.json                     # JSON database (auto-created)
 ```
 
 **Key Implementation Details:**
 - **Type-safe** - Full TypeScript coverage with strict mode
-- **Secure** - Input validation, CSV injection protection, cryptographically secure IDs
-- **Optimized** - N+1 query elimination, localStorage caching
+- **Secure** - Server-side validation, CSV injection protection, XSS prevention in PDF
+- **Optimized** - N+1 query elimination in exports and medication list
+- **Clean separation** - Pure calculation functions, stateless API routes
 
 ## Data Storage
 

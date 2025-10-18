@@ -1,0 +1,46 @@
+{
+  "medications": [
+    {
+      "id": "med_mgw97wrx_e24d36e9d7154141",
+      "name": "Aspirin",
+      "dosage": "81 mg",
+      "frequencyPerDay": 1,
+      "startDate": "2025-01-01",
+      "quantityReceived": 30,
+      "daysSupply": 30,
+      "createdAt": "2025-10-18T12:28:50.732Z",
+      "updatedAt": "2025-10-18T12:28:50.732Z"
+    },
+    {
+      "id": "med_mgw97ws3_6e83cc58881717ce",
+      "name": "Updated Name",
+      "dosage": "20 mg",
+      "frequencyPerDay": 1,
+      "startDate": "2025-01-01",
+      "quantityReceived": 30,
+      "daysSupply": 30,
+      "createdAt": "2025-10-18T12:28:50.739Z",
+      "updatedAt": "2025-10-18T12:28:50.740Z"
+    },
+    {
+      "id": "med_mgw97wsc_2cc74a6354d3e8da",
+      "name": "Test Med",
+      "dosage": "10 mg",
+      "frequencyPerDay": 1,
+      "startDate": "2025-01-01",
+      "quantityReceived": 30,
+      "daysSupply": 30,
+      "createdAt": "2025-10-18T12:28:50.748Z",
+      "updatedAt": "2025-10-18T12:28:50.748Z"
+    }
+  ],
+  "adherenceEvents": [
+    {
+      "medicationId": "med_mgw97wsc_2cc74a6354d3e8da",
+      "date": "2025-01-15",
+      "doses": 1,
+      "status": "taken",
+      "id": "adh_mgw97wsd_01d35f9935565cca"
+    }
+  ]
+}

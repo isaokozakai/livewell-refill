@@ -32,6 +32,7 @@
   flex-direction: column;
   gap: 32px;
   grid-row-start: 2;
+  padding: 50px 100px;
 }
 
 .main ol {
@@ -67,10 +68,7 @@
   height: 48px;
   padding: 0 20px;
   border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -125,7 +123,14 @@ a.secondary {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 1023px) {
+  .main {
+    align-items: center;
+    padding: 50px 70px;
+  }
+}
+
+@media (max-width: 767px) {
   .page {
     padding: 32px;
     padding-bottom: 80px;
@@ -133,6 +138,7 @@ a.secondary {
 
   .main {
     align-items: center;
+    padding: 30px;
   }
 
   .main ol {
@@ -163,5 +169,393 @@ a.secondary {
 @media (prefers-color-scheme: dark) {
   .logo {
     filter: invert();
+  }
+}
+
+/* App-specific styles */
+.container {
+  max-width: 900px;
+  width: 100%;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Alert styles */
+.alert {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.alertTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.alertList {
+  padding: 0 20px;
+  margin: 0;
+}
+
+.alertItem {
+  margin-bottom: 4px;
+}
+
+/* Form styles */
+.formSection {
+  margin-top: 16px;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.formGrid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.formFieldWide {
+  grid-column: 1 / -1;
+  width: fit-content;
+}
+
+.formLabel {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.formInput {
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  transition: border-color 0.2s;
+}
+
+.formInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.formError {
+  color: #dc2626;
+  font-size: 0.75rem;
+}
+
+.formButton {
+  grid-column: 1 / -1;
+  padding: 12px 24px;
+  margin-right: auto;
+  background: var(--foreground);
+  color: var(--background);
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.formButton:hover {
+  background: var(--button-primary-hover);
+}
+
+/* Search styles */
+.searchContainer {
+  margin-top: 4px;
+  position: relative;
+}
+
+.searchInput {
+  min-width: 200px;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.searchResults {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  border: 1px solid #e5e7eb;
+  max-height: 160px;
+  overflow: auto;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.searchResult {
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.searchResult:hover {
+  background: #f3f4f6;
+}
+
+/* Status badge styles */
+.statusBadge {
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+}
+
+.statusOnTrack {
+  background-color: #16a34a;
+}
+
+.statusRunningLow {
+  background-color: #f59e0b;
+}
+
+.statusOverdue {
+  background-color: #dc2626;
+}
+
+/* Progress bar styles */
+.progressBar {
+  background: #e5e7eb;
+  height: 8px;
+  border-radius: 6px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.progressFillGood {
+  background: #3b82f6;
+}
+
+.progressFillLow {
+  background: #ef4444;
+}
+
+/* Medication card styles */
+.medicationsSection {
+  margin-top: 24px;
+}
+
+.medicationsHeader {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.exportButton {
+  padding: 8px 16px;
+  background: var(--foreground);
+  color: var(--background);
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.2s;
+}
+
+.exportButton:hover {
+  background: var(--button-primary-hover);
+}
+
+.exportButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.medicationsGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.medicationCard {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  transition: box-shadow 0.2s;
+}
+
+.medicationCard:hover {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.medicationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.medicationTitle {
+  font-weight: 600;
+}
+
+.medicationDosage {
+  color: #6b7280;
+}
+
+.progressContainer {
+  margin-top: 8px;
+}
+
+.medicationStats {
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 0.875rem;
+}
+
+.statValue {
+  font-weight: 600;
+}
+
+.medicationActions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.actionButton {
+  padding: 6px 12px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.actionButton:hover {
+  background: #e5e7eb;
+}
+
+.deleteButton {
+  margin-left: auto;
+  color: #dc2626;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.deleteButton:hover {
+  background: #fee2e2;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .alert {
+    background: #1c1917;
+    border-color: #a16207;
+  }
+
+  .formInput {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+
+  .formInput:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+  }
+
+  .searchResults {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .searchResult:hover {
+    background: #374151;
+  }
+
+  .medicationCard {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .medicationCard:hover {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  }
+
+  .actionButton {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+  }
+
+  .actionButton:hover {
+    background: #4b5563;
+  }
+
+  .deleteButton {
+    background: #7f1d1d;
+    border-color: #991b1b;
+    color: #fca5a5;
+  }
+
+  .deleteButton:hover {
+    background: #991b1b;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1023px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .formFieldWide {
+    grid-column: span 1;
+  }
+
+  .medicationStats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .medicationsHeader {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 767px) {
+  .medicationStats {
+    grid-template-columns: 1fr;
+  }
+
+  .medicationActions {
+    flex-direction: column;
+  }
+
+  .deleteButton {
+    margin-left: 0;
   }
 }

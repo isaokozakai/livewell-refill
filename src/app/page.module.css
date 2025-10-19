@@ -221,18 +221,13 @@ a.secondary {
 .formGrid {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: 1fr; /* Mobile: 1 column */
 }
 
 .formField {
   display: flex;
   flex-direction: column;
   gap: 4px;
-}
-
-.formFieldWide {
-  grid-column: 1 / -1;
-  width: fit-content;
 }
 
 .formLabel {
@@ -276,32 +271,24 @@ a.secondary {
   background: var(--button-primary-hover);
 }
 
-/* Search styles */
-.searchContainer {
-  margin-top: 4px;
+/* Input with icon styles */
+.inputWithIcon {
   position: relative;
-}
-
-.searchInput {
-  min-width: 200px;
-  padding: 8px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 0.875rem;
 }
 
 .searchResults {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px); /* Position just below the input */
   left: 0;
   right: 0;
   border: 1px solid #e5e7eb;
-  max-height: 160px;
+  max-height: 200px;
   overflow: auto;
   background: white;
   border-radius: 6px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  margin-top: 4px;
 }
 
 .searchResult {
@@ -365,6 +352,8 @@ a.secondary {
 
 .medicationsHeader {
   display: flex;
+  flex-direction: column; /* Mobile: stacked vertically */
+  align-items: stretch; /* Mobile: full width buttons */
   gap: 8px;
   margin-bottom: 8px;
 }
@@ -429,7 +418,7 @@ a.secondary {
 .medicationStats {
   margin-top: 8px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr; /* Mobile: 1 column */
   gap: 8px;
   font-size: 0.875rem;
 }
@@ -441,6 +430,7 @@ a.secondary {
 .medicationActions {
   margin-top: 8px;
   display: flex;
+  flex-direction: column; /* Mobile: stacked vertically */
   gap: 8px;
 }
 
@@ -459,7 +449,7 @@ a.secondary {
 }
 
 .deleteButton {
-  margin-left: auto;
+  margin-left: 0; /* Mobile: no left margin (stacked) */
   color: #dc2626;
   background: #fef2f2;
   border-color: #fecaca;
@@ -526,36 +516,39 @@ a.secondary {
   }
 }
 
-/* Responsive design */
-@media (max-width: 1023px) {
-  .formGrid {
-    grid-template-columns: 1fr;
-  }
+/* Responsive design - Mobile-first approach */
 
-  .formFieldWide {
-    grid-column: span 1;
+/* Tablet: 768px and up */
+@media (min-width: 768px) {
+  .formGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .medicationStats {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .medicationsHeader {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-@media (max-width: 767px) {
-  .medicationStats {
-    grid-template-columns: 1fr;
-  }
-
   .medicationActions {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .deleteButton {
-    margin-left: 0;
+    margin-left: auto;
+  }
+}
+
+/* Desktop: 1024px and up */
+@media (min-width: 1024px) {
+  .formGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .medicationStats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .medicationsHeader {
+    flex-direction: row;
+    align-items: center;
   }
 }

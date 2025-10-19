@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./page.module.css";
 import type {
   MedicationWithComputed,
@@ -60,10 +60,12 @@ export default function Home() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
-  const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState<
     { rxcui: string; name: string; score: number }[]
   >([]);
+
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const isSelectingFromDropdown = useRef(false);
 
   const load = async () => {
     setLoading(true);
@@ -97,14 +99,23 @@ export default function Home() {
   useEffect(() => {
     const ctrl = new AbortController();
     const go = async () => {
-      if (!search.trim()) {
+      // Skip search if we just selected from dropdown
+      if (isSelectingFromDropdown.current) {
+        isSelectingFromDropdown.current = false;
+        return;
+      }
+
+      if (!form.name.trim()) {
         setSearchResults([]);
         return;
       }
       try {
-        const res = await fetch(`/api/search?q=${encodeURIComponent(search)}`, {
-          signal: ctrl.signal,
-        });
+        const res = await fetch(
+          `/api/search?q=${encodeURIComponent(form.name)}`,
+          {
+            signal: ctrl.signal,
+          }
+        );
         if (!res.ok) return;
         const data = await res.json();
         setSearchResults(data);
@@ -119,7 +130,26 @@ export default function Home() {
       clearTimeout(t);
       ctrl.abort();
     };
-  }, [search]);
+  }, [form.name]);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
+      ) {
+        setSearchResults([]);
+      }
+    }
+
+    if (searchResults.length > 0) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [searchResults]);
 
   function validate(values: CreateMedicationInput) {
     const e: Record<string, string> = {};
@@ -323,29 +353,20 @@ export default function Home() {
             {editingId ? "Edit Medication" : "Add Medication"}
           </h2>
           <form onSubmit={submit} className={styles.formGrid}>
-            <div className={`${styles.formField} ${styles.formFieldWide}`}>
+            <div className={styles.formField}>
               <label htmlFor="name" className={styles.formLabel}>
                 Name
               </label>
-              <input
-                id="name"
-                autoComplete="off"
-                className={styles.formInput}
-                value={form.name ?? ""}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, name: e.target.value }))
-                }
-              />
-              {formErrors.name && (
-                <small className={styles.formError}>{formErrors.name}</small>
-              )}
-              <div className={styles.searchContainer}>
+              <div className={styles.inputWithIcon} ref={searchContainerRef}>
                 <input
-                  id="search"
-                  className={styles.searchInput}
-                  placeholder="Search catalog (RxNorm)"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  id="name"
+                  autoComplete="off"
+                  className={styles.formInput}
+                  placeholder="Type to search medications..."
+                  value={form.name ?? ""}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, name: e.target.value }))
+                  }
                 />
                 {searchResults.length > 0 && (
                   <div className={styles.searchResults}>
@@ -354,8 +375,8 @@ export default function Home() {
                         key={i}
                         className={styles.searchResult}
                         onClick={() => {
+                          isSelectingFromDropdown.current = true;
                           setForm((f) => ({ ...f, name: r.name }));
-                          setSearch("");
                           setSearchResults([]);
                         }}
                       >
@@ -365,6 +386,9 @@ export default function Home() {
                   </div>
                 )}
               </div>
+              {formErrors.name && (
+                <small className={styles.formError}>{formErrors.name}</small>
+              )}
             </div>
             <div className={styles.formField}>
               <label htmlFor="dosage" className={styles.formLabel}>
